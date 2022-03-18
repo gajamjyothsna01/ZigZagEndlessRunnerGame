@@ -1,0 +1,13 @@
+ZigZag Endless Runner Game Design Document
+-------------------------------------------
+
+Introduction: It is a genere. The Endless runner game is categories an action genere in which player needs to run in a fixed path or pathways.
+The Levels with in endless runner are usually linear and have no end. So the main purpose is to attain a high score with each attempt at a level.
+Player Movement has left, right and forward(UP).
+if the player is running in a game for the longer time, then the character gradually runs faster as they play, requiring the player to react the faster to the obstcales in the environment that would slow them down and reset their run score.
+
+GamePlay:
+1. The player needs to collect the coins in the Environment by moving Left, right in the environment.
+2. Player can pause/quit anytime during running in the game by clicking on Pause icon.
+3. If player runs during the run, the Gameover screen needs to be activated, where the player can restart the game using restart button or quit the game using Quit button.
+4.  
