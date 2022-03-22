@@ -1,0 +1,4 @@
+OnTriggerExit - 
+SingleTon- It creates only one single object, we can't create multiple objects.
+
+Work on ObjectPool and RayCast
