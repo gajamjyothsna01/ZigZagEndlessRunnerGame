@@ -7,6 +7,7 @@ public class ScoreManagerScript : MonoBehaviour
 {
     public int score;
     public Text scoreText;
+    
     public void Score(int scoreValue)
     {
         score = score + scoreValue;

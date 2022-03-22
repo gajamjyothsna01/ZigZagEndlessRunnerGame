@@ -9,8 +9,9 @@ public class TileSpawnManager : MonoBehaviour
     public GameObject forwardTile;
     public GameObject[] tilesPrefabs = new GameObject[2];
     float time;
-    
-    
+    Stack<GameObject> rightTileStack = new Stack<GameObject>();
+    Stack<GameObject> forwardTileStack = new Stack<GameObject>();
+
     // Start is called before the first frame update
     //how to create a singlerton
 
@@ -41,25 +42,47 @@ public class TileSpawnManager : MonoBehaviour
     }
     void Start()
     {
-        
-       // Instantiate(rightTile,currentTile.transform.GetChild(1).position,Quaternion.identity);
-       for(int i = 0; i < 20; i++)
+
+        // Instantiate(rightTile,currentTile.transform.GetChild(1).position,Quaternion.identity);
+        //SpawnTile();
+        for (int i = 0; i < 10; i++)
         {
             SpawnTile();
-
         }
-
+        //CreateTile(20);
     }
     
     public void SpawnTile()
     {
-        int index = Random.Range(0, 10);
+        /*int index = Random.Range(0, 10);
         if(index == 2)
         {
             currentTile.transform.GetChild(3).gameObject.SetActive(true);
         }
         int k = Random.Range(0, 2);
-        currentTile = Instantiate(tilesPrefabs[k], currentTile.transform.GetChild(k).position, Quaternion.identity);
+        currentTile = Instantiate(tilesPrefabs[k], currentTile.transform.GetChild(k).position, Quaternion.identity);*/
+
+        if(rightTileStack.Count ==0 || forwardTileStack.Count ==0)
+        {
+            CreateTile(20);
+        }
+        int k = Random.Range(0, 2);
+        if (k == 0 )
+        {
+           GameObject tempTile = forwardTileStack.Pop();
+            tempTile.SetActive(true);
+            tempTile.transform.position = currentTile.transform.GetChild(Random.Range(0,2)).position;
+            currentTile = tempTile;
+        }
+        else if (k==1)
+        {
+            GameObject tempTile = rightTileStack.Pop();
+            tempTile.SetActive(true);
+            tempTile.transform.position = currentTile.transform.GetChild(Random.Range(0,2)). position;
+            currentTile= tempTile;
+
+        }
+       
     }
 
     // Update is called once per frame
@@ -71,6 +94,38 @@ public class TileSpawnManager : MonoBehaviour
             Destroy(currentTile);
         }
     }
-    
-   
+    public void CreateTile(int value)
+    {
+        for (int i = 0; i < value; i++)
+        {
+            
+            //SpawnTile();
+            //CreateTile();
+            rightTileStack.Push(Instantiate(tilesPrefabs[1]));
+            tilesPrefabs[1].SetActive(false);
+
+            forwardTileStack.Push(Instantiate(tilesPrefabs[0]));
+            tilesPrefabs[0].SetActive(false);
+
+        }
+        
+
+    }
+    public void BackToRightPool(GameObject obj)
+    {
+        obj.GetComponent<Rigidbody>().isKinematic = true;
+        rightTileStack.Push(obj);
+        rightTileStack.Peek().SetActive(false);
+        //obj.SetActive(false);
+
+    }
+    public void BackToForwardPool(GameObject obj)
+    {
+        obj.GetComponent<Rigidbody>().isKinematic = true;
+        forwardTileStack.Push(obj);
+        forwardTileStack.Peek().SetActive(false);
+        //obj.SetActive(false);
+
+    }
+
 }

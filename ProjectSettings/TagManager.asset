@@ -7,6 +7,8 @@ TagManager:
   - Platform
   - Tile
   - Coin
+  - RTile
+  - FTile
   layers:
   - Default
   - TransparentFX

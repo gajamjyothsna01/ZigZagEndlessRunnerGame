@@ -6,13 +6,19 @@ public class PlayerMovement : MonoBehaviour
 {
     public Vector3 direction;
     public float playerSpeed;
-    //TileSpawnManager spawnManager;
+    public GameObject tempObj;
+    TileSpawnManager spawnManager;
    // public static bool GetMouseButton()
     // Start is called before  first frame update
     void Start()
     {
-        //spawnManager = GameObject.Find("TileSpawnManager").GetComponent<TileSpawnManager>();
-      
+        spawnManager = GameObject.Find("TileSpawnManager").GetComponent<TileSpawnManager>();
+        for(int i = 0;i<10;i++)
+        {
+            TileSpawnManager.Instance.SpawnTile();
+
+        }
+
 
     }
 
@@ -29,21 +35,57 @@ public class PlayerMovement : MonoBehaviour
             else
                 direction = Vector3.forward;
         }
+        //SpawnTile();
         transform.Translate(direction * playerSpeed * Time.deltaTime);
 
     }
-    private void OnTriggerExit(Collider other)
+   public void OnCollisionExit(Collision collision)
     {
+        if(collision.gameObject.tag=="RTile")
+        {
+            //Destroy(gameObject, 3f);
+            TileSpawnManager.Instance.BackToRightPool(collision.gameObject);
+            tempObj = collision.gameObject;
+            //StartCoroutine("RightPool");
+        }
+        if (collision.gameObject.tag == "FTile")
+        {
+            //Destroy(gameObject, 3f);
+            TileSpawnManager.Instance.BackToForwardPool(collision.gameObject);
+            tempObj = collision.gameObject;
+            //StartCoroutine("ForwardPool");
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        spawnManager.SpawnTile();
         //spawnManager.SpawnTile();
         
         //if(other.gameObject.tag =="Player")
         //{
-            TileSpawnManager.Instance.SpawnTile();
+        TileSpawnManager.Instance.SpawnTile();
+            
         //}
+        /*if(other.gameObject.tag == "RTile")
+        {
+            tempObj = other.gameObject;
+            tempObj.GetComponentInParent<Rigidbody>().isKinematic = false;
+            //tempObj.GetComponent<Rigidbody>().isKinematic = false;
+            StartCoroutine("RightPool");
+        }
+        else if (other.gameObject.tag == "FTile")
+        {
+            tempObj = other.gameObject;
+            tempObj.GetComponentInParent<Rigidbody>().isKinematic=false;
+                //
+                                         //GetComponent<Rigidbody>().isKinematic = false;
+            StartCoroutine("ForwardPool");
+        }*/
     }
-    private void OnCollisionEnter(Collision collision)
+    
+    private void OnTriggerExit(Collider other) 
     {
-        if(collision.gameObject.tag =="Coin")
+        if(other.gameObject.tag =="Coin")
         {
 
            // ScoreManagerScript.Score(10);
@@ -53,6 +95,24 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    IEnumerator RightPool()
+    {
+        yield return new WaitForSeconds(0.5f);
+       // Debug.Log()
+
+        //TileSpawnManager.Instance.BackToForwardPool(tempObj);
+        TileSpawnManager.Instance.BackToRightPool(tempObj);
+
+    }
+    IEnumerator ForwardPool()
+    {
+        yield return new WaitForSeconds(0.5f);
+       // Debug.Log()
+
+        TileSpawnManager.Instance.BackToForwardPool(tempObj);
+        //TileSpawnManager.Instance.BackToRightPool(tempObj);
+
+    }
 
 
 
